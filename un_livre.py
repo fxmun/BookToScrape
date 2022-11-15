@@ -185,7 +185,7 @@ imgLivre()
 
 #création du fichier csv
 en_tete = ["product_page_url" , "universal_product_code" , "title" , "price_including_tax" , "price_excluding_tax" , "number_available" ,"product_description" , "category" , "review_rating" , "image_url"]
-with open("un_livre" , "w") as fichier_csv:
+with open("un_livre.csv" , "w") as fichier_csv:
     scribe = csv.writer(fichier_csv , delimiter=";")
     scribe.writerow(en_tete)
     for prod,upc,titr,ttc,ht,numb,descr,catego,review,imag in zip(product_page_url,universal_product_code,title,price_including_tax,price_excluding_tax,number_available,product_description,category,review_rating,image_url):
