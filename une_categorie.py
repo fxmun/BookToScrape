@@ -20,7 +20,7 @@ def oneCateg():#retourne une catégorie
     oneCategories = []
     for oneCateg in allUrls():
         oneCategories.append(oneCateg)
-    return oneCategories[8]
+    return oneCategories[2]
 oneCategories = oneCateg()
 
 def catBooks(oneCategories):# boucle sur chaque elément d'une catégorie afin d'extraire l'url de chaque livre
@@ -191,7 +191,7 @@ def main(livresUrl):#boucle sur chaque url de livre d'une catégorie pour en ext
         #print(datas)
         #print (unit)          
         
-        def csvGen(unit):#création du fichier csv
+        def csvGen(datas):#création du fichier csv
             
                 en_tete = ['product_page_url' , 'universal_product_code' , 'title' , 'price_including_tax' , 'price_excluding_tax' , 'number_available' ,'product_description' , 'category' , 'review_rating' , 'image_url']
                 cat = datas[7]
@@ -200,9 +200,8 @@ def main(livresUrl):#boucle sur chaque url de livre d'une catégorie pour en ext
                 with open('data/' + cat + '/' + csvFile, 'a', errors = 'replace') as csvFile:
                     scribe = csv.writer(csvFile , delimiter = ";")
                     scribe.writerow(en_tete)      
-                    for step in [datas]:
-                        scribe.writerow(step)
+                    scribe.writerow(datas)
                             
-        csvGen(unit)
+        csvGen(datas)
 main(livresUrl)
 print('traitement termine avec succes !')

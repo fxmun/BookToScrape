@@ -68,6 +68,7 @@ def titre():#retourne le titre du livre
         data3.append(titres)
     return titres
 
+titres = titre()
 titre()
 
 def ttc():#retourne le prix ttc du livre
@@ -102,6 +103,7 @@ def dispo():#retourne le nombre de livres disponibles
             dispos = dispo.td.text.split(' ')[2].replace('(','')
             data6.append(dispos)
     return dispos
+
 dispo()
 
 def descript():#retourne un résumé du livre
@@ -170,8 +172,8 @@ def imgLivre():#définit les parametres de création de fichier image du livre
     cat=str(category)
     cat=''.join([x for x in cat if x.isalnum()])
     path = 'data/' + cat + '/images'
-    titreImg=titre()
-    titreImg = ''.join([x for x in title if x.isalnum()]) + '.jpg'
+    titreImg=titres
+    titreImg = ''.join([x for x in titres if x.isalnum()]) + '.jpg'
 
     # créer les repertoires du path
     if not os.path.exists(path):
@@ -185,8 +187,11 @@ imgLivre()
 
 #création du fichier csv
 en_tete = ["product_page_url" , "universal_product_code" , "title" , "price_including_tax" , "price_excluding_tax" , "number_available" ,"product_description" , "category" , "review_rating" , "image_url"]
-with open("un_livre.csv" , "w") as fichier_csv:
-    scribe = csv.writer(fichier_csv , delimiter=";")
+cat = category
+cat = ''.join([x for x in cat if x.isalnum()])
+csvFile = cat + '.csv'
+with open('data/' + cat + '/' + csvFile, 'a', errors = 'replace') as csvFile:
+    scribe = csv.writer(csvFile , delimiter = ";")
     scribe.writerow(en_tete)
     for prod,upc,titr,ttc,ht,numb,descr,catego,review,imag in zip(product_page_url,universal_product_code,title,price_including_tax,price_excluding_tax,number_available,product_description,category,review_rating,image_url):
         liste=[prod,upc,titr,ttc,ht,numb,descr,catego,review,imag]
