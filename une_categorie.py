@@ -20,7 +20,7 @@ def oneCateg():#retourne une catégorie
     oneCategories = []
     for oneCateg in allUrls():
         oneCategories.append(oneCateg)
-    return oneCategories[2]
+    return oneCategories[16]
 oneCategories = oneCateg()
 
 def catBooks(oneCategories):# boucle sur chaque elément d'une catégorie afin d'extraire l'url de chaque livre
