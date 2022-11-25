@@ -15,7 +15,9 @@ Elements relevés:
  - Note d'appréciation
  - URL de l'image du livre
 
-|>> data/
+Arborescence des données:
+
+>> data/
     |>> categorie_1/
         |>> categorie_1.csv
         |>> images/
@@ -30,32 +32,50 @@ Elements relevés:
             |...........
 
 
+Machine Windows:
 
+    1/  Installez Python sur l'ordinateur:
 
-Installer Python sur l'ordinateur
+            https://www.python.org/downloads/
 
-démarrez la console et se  positionner dans un dossier dédié à cette procédure puis clonez  le dépot avec la commande ci dessous:
+    2/  Installez Git sur l'ordinateur:
 
-git clone https://github.com/fxmun/BookToScrape.git
+            https://git-scm.com/downloads
 
-Placez vous dans le dossier BookToScrape et executez la commande ci dessous pour créer l'environnement virtuel:
+    3/  démarrez la console git bash (commandes linux) ou git cmd (commandes windows) et se  positionner dans un dossier dédié à cette procédure puis clonez  le dépot en executant la commande:
 
-python -m venv env
+            git clone https://github.com/fxmun/BookToScrape.git
 
-Activez l'environnement:
+    4/  Placez vous dans le dossier BookToScrape et créez l'environnement virtuel avec la commande:
 
-    Windows:
+            python -m venv env
 
-        call env\scripts\activate.bat
+    5/  Activez l'environnement virtuel dans la console git cmd avec la commande:
 
-    Linux:
+            call env\scripts\activate.bat
 
-        source env/bin/activate
+    6/  Ou activez l'environnement virtuel dans la console git bash avec la commande:
 
-Installer les packages:
+            source env\scripts\activate.bat
 
-    pip install -r requirements.txt
+    7/  Installez les packages avec la commande:
 
-Executez le fichier avec la commande ci dessous:
+            pip install -r requirements.txt
 
-    python main.py
+    Important: avant d'executer le fichier python assurez vous que la veille de votre machine n'est pas activée, cela pourait interompre le traitement en cours selon la configuration de celle-ci. Pour info la durée du traitement est d'environ 40 minutes, patientez jusqu'au message "traitement terminé avec succès".
+
+    8/  Executez le fichier avec la commande:
+
+            python toute_categorie.py
+
+Machine Linux:
+
+    1/  Raprochez vous de votre référent linux pour l'installation des package Python et Git ainsi que pour les commandes de clonage du dépot git puis la creation de l'environnement virtuel.
+
+    2/  Adaptez les étapes 1 à 4 de la procedure windows avec la procedure linux:
+
+    3/  Activez l'environnement virtuel depuis la console avec la commande:
+
+            source env/bin/activate
+
+    4/  Executez le fichier python:
