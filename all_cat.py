@@ -1,42 +1,11 @@
-'''def remplir_entete():
-    en_tete = ['product_page_url' , 'universal_product_code' , 'title' , 'price_including_tax' , 'price_excluding_tax' , 'number_available' ,'product_description' , 'category' , 'review_rating' , 'image_url']
-    with open('data/' + cat + '/' + csvFile, 'a', errors = 'replace') as csvFile:
-                
-                
-
-
-def get_datas_of_a_book(url_book)
-    ...
-    
-def get_urls_off_all_books_of_a_category(url_category)
-    ...
-    
-def get_urls_off_all_categories(url_site)
-    ...
-    
-def imgLivre(img):
-    ...
-
-    
-main():
-    url_site = 'https://....'
-    list_of_cat = get_urls_off_all_categories(url_site)
-    for cat in list_of_cat:
-        list_of_books = get_urls_off_all_books_of_a_category(cat)
-        # create cat_csv file and add entete line
-        for book in list_of_books:
-            datas = get_datas_of_a_book(book)
-            # open cat_csv file and append datas sauf image
-            imgLivre(datas.image)'''
-
 import requests
 from bs4 import BeautifulSoup
 import csv
-import os
+import os   
 
 homeUrl = "http://books.toscrape.com/"
 
-def allUrls(homeUrl):#retourne toutes les catégories
+def allUrls(homeUrl):# retourne toutes les catégories
     page = requests.get(homeUrl)
     soup = BeautifulSoup(page.content, 'lxml')
     urls = []
@@ -47,24 +16,25 @@ def allUrls(homeUrl):#retourne toutes les catégories
     return categs
 categs = allUrls(homeUrl)
 
-def oneCateg(categs):#retourne une catégorie
-    #page = requests.get(categs)
-    #soup = BeautifulSoup(page.content,'lxml')
-    booksCategorie = categs[0]
-    return booksCategorie
+def oneCateg(categs):# retourne une catégorie
+    booksCategorie = ''
+    for cat in categs:
+        booksCategorie = cat
+        return booksCategorie
+
 booksCategorie = oneCateg(categs)
 
-def catBooks(booksCategorie):# boucle sur chaque elément d'une catégorie afin d'extraire l'url de chaque livre
+def catBooks(booksCategorie):# complete une liste (livresUrl) avec toutes les url d'une catégorie
     page = requests.get(booksCategorie)
     soup = BeautifulSoup(page.content,'lxml')
         
-    # verifit si une pagination est existante
+    # vérifit si une pagination est existante
     if soup.find('ul', class_ = 'pager'):
         nombreDePage = int(soup.find('li', class_='current').text[40])
     else:
         nombreDePage = 1
 
-    # boucle sur chaque livre et incremente son url dans un tableau
+    # boucle sur chaque livre pour compléter son url en fonction de la pagination
     iterPages = 0
     livresUrl = []
         
@@ -77,16 +47,22 @@ def catBooks(booksCategorie):# boucle sur chaque elément d'une catégorie afin 
             nextPage = booksCategorie.replace('index.html','page-' + str(iterPages + 1) + '.html')
             page = requests.get(nextPage)
             soup = BeautifulSoup(page.content,'lxml')
-
     return livresUrl
+
 livresUrl = catBooks(booksCategorie)
 
-unLivre = livresUrl[0]
+def oneBook(livresUrl):# retourne un livre de la liste des url d'une catgorie
+    unLivre = ''
+    for book in livresUrl:
+        unLivre = book
+        return unLivre
 
-def genData(unLivre):
+unLivre = oneBook(livresUrl)
+
+def genData(unLivre,booksCategorie):# complete une liste avec toute les data du livre et sa categorie
     datas = []
-    def prodUrl(unLivre):#retourne l'url du livre
-        page = requests.get(booksCategorie)
+    def prodUrl(unLivre):# retourne l'url du livre
+        page = requests.get(unLivre)
         soup = BeautifulSoup(page.content,'lxml')
         prods = unLivre
         return prods
@@ -94,7 +70,7 @@ def genData(unLivre):
     prods = prodUrl(unLivre)
     datas.append(prods)
 
-    def upc(unLivre):#retourne le code du livre
+    def upc(unLivre):# retourne le code du livre
         page = requests.get(unLivre)
         soup = BeautifulSoup(page.content,'lxml')
         for upc in soup.find_all('tr'):
@@ -105,17 +81,17 @@ def genData(unLivre):
     upcs = upc(unLivre)
     datas.append(upcs)
 
-    def titre(unLivre):#retourne le titre du livre
+    def title(unLivre):# retourne le titre du livre
         page = requests.get(unLivre)
         soup = BeautifulSoup(page.content,'lxml')
-        for titre in soup.find_all('h1'):
-            titres = titre.text
-        return titres
+        for title in soup.find_all('h1'):
+            titre = title.text
+        return titre
 
-    titres = titre(unLivre)
-    datas.append(titres)
+    titre = title(unLivre)
+    datas.append(titre)
 
-    def ttc(unLivre):#retourne le prix ttc du livre
+    def ttc(unLivre):# retourne le prix ttc du livre
         page = requests.get(unLivre)
         soup = BeautifulSoup(page.content,'lxml')
         for ttc in soup.find_all('tr'):
@@ -126,7 +102,7 @@ def genData(unLivre):
     ttcs = ttc(unLivre)
     datas.append(ttcs)
 
-    def ht(unLivre):#retourne le prix ht du livre
+    def ht(unLivre):# retourne le prix ht du livre
         page = requests.get(unLivre)
         soup = BeautifulSoup(page.content,'lxml')
         for ht in soup.find_all('tr'):
@@ -137,7 +113,7 @@ def genData(unLivre):
     hts = ht(unLivre)
     datas.append(hts)
 
-    def dispo(unLivre):#retourne le nombre de livres disponibles
+    def dispo(unLivre):# retourne le nombre de livres disponibles
         page = requests.get(unLivre)
         soup = BeautifulSoup(page.content,'lxml')
         for dispo in soup.find_all('tr'):
@@ -148,7 +124,7 @@ def genData(unLivre):
     dispos = dispo(unLivre)
     datas.append(dispos)
 
-    def descript(unLivre):#retourne un résumé du livre
+    def descript(unLivre):# retourne un résumé du livre
         page = requests.get(unLivre)
         soup = BeautifulSoup(page.content,'lxml')
         desc = soup.find_all('p',)[3]
@@ -158,7 +134,7 @@ def genData(unLivre):
     descripts = descript(unLivre)
     datas.append(descripts)
 
-    def categorie(booksCategorie):#retourne la catégorie du livre
+    def categorie(booksCategorie):# retourne la catégorie du livre
         page = requests.get(booksCategorie)
         soup = BeautifulSoup(page.content,'lxml')
         for cat in soup.ul.find_all('li'):
@@ -169,7 +145,7 @@ def genData(unLivre):
     categorie = categorie(booksCategorie)
     datas.append(categorie)
 
-    def eval(unLivre):#retourne l'appréciation du livre
+    def eval(unLivre):# retourne l'appréciation du livre
         page = requests.get(unLivre)
         soup = BeautifulSoup(page.content,'lxml')
         for star in soup.find_all('p',limit = 4):
@@ -185,7 +161,7 @@ def genData(unLivre):
     note = eval(unLivre)
     datas.append(note)            
 
-    def img(unLivre):#retourne l'url de l'image du livre
+    def img(unLivre):# retourne l'url de l'image du livre
         page = requests.get(unLivre)
         soup = BeautifulSoup(page.content,'lxml')
         img = soup.find('img')
@@ -195,7 +171,7 @@ def genData(unLivre):
     image = img(unLivre)
     datas.append(image)  
 
-    def path(categorie):
+    def path(categorie):# crée l'arborescence des dossiers et retourne le chemin relatif
         cat = categorie
         cat = ''.join([x for x in cat if x.isalnum()])
         path = 'data/' + cat + '/images/'
@@ -203,45 +179,60 @@ def genData(unLivre):
         if not os.path.exists(path):
             os.makedirs(path)
         return path
+    
     path = path(categorie)
     datas.append(path)
 
-    def imgLivre(image, path, titres):#définit les parametres de création de fichier image du livre
+    def imgLivre(image, path, titre):# définit les paramètres de création du fichier image du livre et crée le fichier
         imageGet = requests.get(image)
         soup = BeautifulSoup(imageGet.content,'lxml')
-        titres = ''.join([x for x in titres if x.isalnum()]) + '.jpg'    
-        open(path + titres, 'wb').write(imageGet.content)
+        titre = ''.join([x for x in titre if x.isalnum()]) + '.jpg'    
+        open(path + titre, 'wb').write(imageGet.content)
         return imageGet
 
-    imageGet = imgLivre(image, path, titres)
+    imageGet = imgLivre(image, path, titre)
     datas.append(imageGet)
-    
-    def genCsv():
-        en_tete = ['product_page_url' , 'universal_product_code' , 'title' , 'price_including_tax' , 'price_excluding_tax' , 'number_available' ,'product_description' , 'category' , 'review_rating' , 'image_url']
-        categorie = datas[7]
-        categorie = ''.join([x for x in categorie if x.isalnum()])
-        csvFile = categorie + '.csv'
-        path = 'data/' + categorie + '/'
-        with open(path + csvFile, 'w', errors = 'replace') as csvFile:
-            scribe = csv.writer(csvFile , delimiter = ";")
-            scribe.writerow(en_tete)
-            scribe.writerow(datas[0:-2])
-        return csvFile
-
-    csvFile = genCsv() 
 
     return datas
 
-datas = genData(unLivre)     
+datas = genData(unLivre, booksCategorie)
 
-def main():
-    homeUrl = "http://books.toscrape.com/"
-    listCategs = allUrls(homeUrl)
-    for cat in listCategs:
-        listBooks = catBooks(cat)
-        # create cat_csv file and add entete line
-        for book in listBooks:
-            datas = genData(book)
-            imgLivre(datas[9], datas[10], datas[2])
+def main():# appele les fonctions sus-jacente  en leur passant les parametres nécessaires en arguments et crée les fichiers csv
+    categs = allUrls(homeUrl)
+    for cat in categs:
+        booksCategorie = catBooks(cat)
+        page = requests.get(cat)
+        soup = BeautifulSoup(page.content,'lxml')
+        for oneCat in soup.ul.find_all('li'):
+            if 'Home' not in oneCat.text and 'Books' not in oneCat.text:
+                categorie = oneCat.text
 
-print(datas)
+        # création du fichier csv pour chaque catégorie en complètant uniquement l'entête
+        en_tete = ['product_page_url' , 'universal_product_code' , 'title' , 'price_including_tax' , 'price_excluding_tax' , 'number_available' ,'product_description' , 'category' , 'review_rating' , 'image_url']
+        categorie = ''.join([x for x in categorie if x.isalnum()])
+        csvFile = categorie + '.csv'
+        path = 'data/' + categorie + '/'
+        if not os.path.exists(path):
+            os.makedirs(path)
+        with open(path + csvFile, 'w', errors = 'replace') as csvFile:
+            scribe = csv.writer(csvFile , delimiter = ";")
+            scribe.writerow(en_tete)
+
+        for book in booksCategorie:# récupère les data de chaque livre et complète le fichier csv de chaque catégorie
+                livres = oneBook(booksCategorie)
+                datas = genData(book, cat)
+                page = requests.get(cat)
+                soup = BeautifulSoup(page.content,'lxml')
+                for oneCat in soup.ul.find_all('li'):
+                    if 'Home' not in oneCat.text and 'Books' not in oneCat.text:
+                        categorie = oneCat.text
+                categorie = ''.join([x for x in categorie if x.isalnum()])
+                csvFile = categorie + '.csv'
+                path = 'data/' + categorie + '/'
+                with open(path + csvFile, 'a', errors = 'replace') as csvFile:
+                    scribe = csv.writer(csvFile , delimiter = ";")
+                    scribe.writerow(datas[0:-2]) 
+
+main()
+
+print("Traitement termine avec succes ! ...")
