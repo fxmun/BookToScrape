@@ -1,6 +1,12 @@
 # BookToScrape
 
-Projet "Extract Transform Load" sur tous les livres du site http://books.toscrape.com/
+## Important:  avant d'executer le fichier python assurez vous que la veille de votre machine n'est pas activée, 
+## cela pourait interompre le traitement en cours selon la configuration de celle-ci.
+## N'essayez pas d'ouvrir les fichiers pendant le traitement !
+## Patientez jusqu'au message "Traitement terminé avec succès ! ...".
+
+## Projet "Extract Transform Load" sur tous les livres du site
+### http://books.toscrape.com/
 
 ## Elements relevés:
 
@@ -62,11 +68,6 @@ Projet "Extract Transform Load" sur tous les livres du site http://books.toscrap
 ### 7/  Installez les packages avec la commande:
 
 #### pip install -r requirements.txt
-
-## Important:  avant d'executer le fichier python assurez vous que la veille de votre machine n'est pas activée, 
-## cela pourait interompre le traitement en cours selon la configuration de celle-ci.
-## N'essayez pas d'ouvrir les fichiers pendant le traitement !
-## Patientez jusqu'au message "Traitement terminé avec succès ! ...".
 
 ### 8/  Executez le fichier avec la commande:
 
